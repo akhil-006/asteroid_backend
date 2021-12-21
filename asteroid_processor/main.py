@@ -12,6 +12,7 @@ def main():
     while True:
         try:
             obj_proc.read_data_from_stream()
+            obj_proc.check_and_dump_to_file()
         except Exception as ex:
             print('Exception: ', ex)
 

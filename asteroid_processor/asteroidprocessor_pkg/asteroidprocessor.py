@@ -1,12 +1,15 @@
-from redis_pkg.redis_library import read_data_from_stream
-from commons_pkg.commons import extract
 from asteroidprocessor_pkg.actions_pkg.create_asteroid import create_asteroid
 from asteroidprocessor_pkg.actions_pkg.get_asteroid import get_asteroid_info
 from asteroidprocessor_pkg.actions_pkg.update_asteroid import update_asteroid_info
 from asteroidprocessor_pkg.actions_pkg.delete_asteroid import delete_asteroid_info
+from commons_pkg.commons import extract
+from redis_pkg.redis_library import read_data_from_stream
+from counter import  Counter
+
 
 
 class AsteroidProcessor:
+    instance_counter = Counter(1)
     def __init__(self, rconn, streamname):
         self._rconn = rconn
         self._strm_name = streamname
@@ -54,4 +57,7 @@ class AsteroidProcessor:
             method = extracted_data['method'].lower()
             # call the appropriate CRUD handler
             self._actions.get(method)(self, extracted_data)
+
+    def check_and_dump_to_file(self):
+        pass
 
