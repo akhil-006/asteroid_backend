@@ -2,21 +2,20 @@ from asteroidprocessor_pkg.actions_pkg.create_asteroid import create_asteroid
 from asteroidprocessor_pkg.actions_pkg.get_asteroid import get_asteroid_info
 from asteroidprocessor_pkg.actions_pkg.update_asteroid import update_asteroid_info
 from asteroidprocessor_pkg.actions_pkg.delete_asteroid import delete_asteroid_info
+from asteroidprocessor_pkg.dumpreport_pkg.dumpreport import extract_data_dump_to
 from commons_pkg.commons import extract
-from redis_pkg.redis_library import read_data_from_stream
-from counter import  Counter
-
+from redis_pkg.redis_library import read_data_from_stream, get_data
 
 
 class AsteroidProcessor:
-    instance_counter = Counter(1)
     def __init__(self, rconn, streamname):
         self._rconn = rconn
         self._strm_name = streamname
         self._count = 10
         self._block_for_ms = 2000
-        self._dbfile_name = 'asteroidsdetails.csv'
-        self._header = False
+        self._reportfile_name = 'asteroidsdetails.csv'
+        self._instance_counter = 0
+        self._generate_report_after_counter_value = 20
         self._actions = {
             'post': create_asteroid,
             'get': get_asteroid_info,
@@ -29,24 +28,24 @@ class AsteroidProcessor:
         return self._rconn
 
     @property
-    def dbfile_name(self):
-        return self._dbfile_name
+    def reportfile_name(self):
+        return self._reportfile_name
 
     @property
     def count(self):
         return self._count
 
     @property
-    def header(self):
-        return self._header
-
-    @header.setter
-    def header(self, attrib):
-        self._header = attrib
-
-    @property
     def blockfor_ms(self):
         return self._block_for_ms
+
+    @property
+    def instance_counter(self):
+        return self._instance_counter
+
+    @instance_counter.setter
+    def instance_counter(self, value):
+        self._instance_counter = value
 
     def read_data_from_stream(self):
         data = read_data_from_stream(
@@ -59,5 +58,13 @@ class AsteroidProcessor:
             self._actions.get(method)(self, extracted_data)
 
     def check_and_dump_to_file(self):
-        pass
+        instance_count = self.instance_counter
+        print(instance_count)
+        if instance_count >= self._generate_report_after_counter_value:
+            data = []
+            for i in range(1, instance_count):
+                data.append(get_data(self._rconn, i).decode())
+
+            if data:
+                extract_data_dump_to(self.reportfile_name, self, data)
 

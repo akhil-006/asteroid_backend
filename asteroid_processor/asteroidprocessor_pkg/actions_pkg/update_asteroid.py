@@ -1,10 +1,6 @@
 import json
+from commons_pkg.commons import fields
 from redis_pkg.redis_library import add_data_to_stream, get_data, set_data
-
-fields = [
-    'type', 'sizeMetres', 'distanceFromEarthAU', 'location', 'probabilityOfCollisionWithEarth',
-    'timeOfObservation', 'name',
-]
 
 
 def update_asteroid_info(obj_asteroid_proc, data):

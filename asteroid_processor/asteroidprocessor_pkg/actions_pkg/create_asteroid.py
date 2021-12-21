@@ -16,6 +16,9 @@ def create_asteroid(obj_asteroid_proc, data):
             'status': 'success',
             'response_code': 201
         }
+
+        obj_asteroid_proc.instance_counter += 1
+        set_data(obj_asteroid_proc.rconn, obj_asteroid_proc.instance_counter, req_id)
     except Exception as ex:
         ret_data = {
             'error': 'Error message described below',

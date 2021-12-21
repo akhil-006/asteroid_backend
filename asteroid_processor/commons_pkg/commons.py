@@ -1,6 +1,11 @@
 import json
 import random
 
+fields = [
+    'type', 'sizeMetres', 'distanceFromEarthAU', 'location', 'probabilityOfCollisionWithEarth',
+    'timeOfObservation', 'name',
+]
+
 
 def getuniqueid():
     min = 000000000000000000000000
