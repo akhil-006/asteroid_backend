@@ -1,10 +1,24 @@
 import json
 import random
 
+# DONOT change the sequence of this list. If you want to add another field/element then append it at last (after the
+# comma)
 fields = [
-    'type', 'sizeMetres', 'distanceFromEarthAU', 'location', 'probabilityOfCollisionWithEarth',
+    'type', 'sizeMeters', 'distanceFromEarthAU', 'location', 'probabilityOfCollisionWithEarth',
     'timeOfObservation', 'name',
 ]
+
+
+alert_params = {
+    'sizeMeters': 1000,
+    'probabilityOfCollisionWithEarth': 0.9,
+    'everyAsteroidWith': [
+        {
+            'sizeMeters': 100,
+            'probabilityOfCollisionWithEarth': 0.7
+        },
+    ]
+}
 
 
 def getuniqueid():
