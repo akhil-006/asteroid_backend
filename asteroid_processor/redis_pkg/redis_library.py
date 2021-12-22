@@ -7,13 +7,13 @@ def read_data_from_stream(rconn, stream, count, block):
     return rconn.xread({stream: '$'}, count, block)
 
 
-def set_data(rconn, key, value, config='config:asteroid'):
+def set_data(rconn, key, value, config='info:asteroid'):
     rconn.hset(config, key, value)
 
 
-def get_data(rconn, key, config='config:asteroid'):
+def get_data(rconn, key, config='info:asteroid'):
     return rconn.hget(config, key)
 
 
-def delete_data(rconn, key, config='config:asteroid'):
+def delete_data(rconn, key, config='info:asteroid'):
     return rconn.hdel(config, key)

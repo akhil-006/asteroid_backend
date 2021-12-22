@@ -1,3 +1,5 @@
+import time
+
 from asteroidprocessor_pkg.actions_pkg.create_asteroid import create_asteroid
 from asteroidprocessor_pkg.actions_pkg.get_asteroid import get_asteroid_info
 from asteroidprocessor_pkg.actions_pkg.update_asteroid import update_asteroid_info
@@ -15,7 +17,9 @@ class AsteroidProcessor:
         self._block_for_ms = 2000
         self._reportfile_name = 'asteroidsdetails.csv'
         self._instance_counter = 0
-        self._generate_report_after_counter_value = 20
+        self._generate_report_after_counter_value = 2
+        self._report_counter = 2
+        self._start = 1
         self._actions = {
             'post': create_asteroid,
             'get': get_asteroid_info,
@@ -58,13 +62,14 @@ class AsteroidProcessor:
             self._actions.get(method)(self, extracted_data)
 
     def check_and_dump_to_file(self):
-        instance_count = self.instance_counter
-        print(instance_count)
-        if instance_count >= self._generate_report_after_counter_value:
+        if self.instance_counter >= self._generate_report_after_counter_value:
             data = []
-            for i in range(1, instance_count):
+            for i in range(self._start, self._generate_report_after_counter_value):
                 data.append(get_data(self._rconn, i).decode())
 
             if data:
-                extract_data_dump_to(self.reportfile_name, self, data)
+                extract_data_dump_to(f'{self.reportfile_name}_{int(time.time())}', self, data)
+                self._instance_counter = self._generate_report_after_counter_value
+                self._start = self._instance_counter + 1
+                self._generate_report_after_counter_value *= 2
 
