@@ -1,7 +1,7 @@
 import json
 import random
 
-# DONOT change the sequence of this list. If you want to add another field/element then append it at last (after the
+# DO NOT change the sequence of this list. If you want to add another field/element then append it at last (after the
 # comma)
 fields = [
     'type', 'sizeMeters', 'distanceFromEarthAU', 'location', 'probabilityOfCollisionWithEarth',
@@ -41,3 +41,22 @@ def extract(data):
 
     return actual_data_dict
 
+
+def check_alert_params(asteroid_info):
+    everyasteroid_with = alert_params.get('everyAsteroidWith')
+    alert_bruce_willis = False
+    for key in alert_params.keys():
+        if key in asteroid_info:
+            if asteroid_info[key] >= alert_params[key]:
+                alert_bruce_willis = True
+                break
+
+    if not alert_bruce_willis:
+        for list_val in everyasteroid_with:
+            keys = list(list_val.keys())
+            for key in keys:
+                if asteroid_info[key] >= list_val[key]:
+                    alert_bruce_willis = True
+                    break
+
+    return alert_bruce_willis
