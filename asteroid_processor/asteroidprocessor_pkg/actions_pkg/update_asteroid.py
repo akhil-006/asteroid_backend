@@ -16,6 +16,7 @@ def update_asteroid_info(obj_asteroid_proc, data):
         set_data(obj_asteroid_proc.rconn, req_id, json.dumps(ret_data))
         ret_data = {
             'message': 'Asteroid Info Updated',
+            'name': ret_data.get('name'),
             'asteroidId': req_id,
             'status': 'success',
             'response_code': 200
