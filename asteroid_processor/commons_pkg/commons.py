@@ -52,11 +52,24 @@ def check_alert_params(asteroid_info):
                 break
 
     if not alert_bruce_willis:
+        check_list = []
         for list_val in everyasteroid_with:
             keys = list(list_val.keys())
             for key in keys:
-                if asteroid_info[key] >= list_val[key]:
-                    alert_bruce_willis = True
-                    break
+                check_list.append(True) if asteroid_info[key] >= list_val[key] else check_list.append(False)
+
+        if all(check_list) is True:
+            alert_bruce_willis = True
 
     return alert_bruce_willis
+
+
+def validate_data(info):
+    keys = list(info.keys())
+    del keys[keys.index('request_id')]
+    del keys[keys.index('response_stream_name')]
+    del keys[keys.index('method')]
+    if keys != fields:
+        unknown_fields = [field for field in keys if field not in fields]
+        return f'Valid Fields are {fields}. Unknown fields supplied: {unknown_fields}'
+    return str()
