@@ -2,6 +2,9 @@ import json
 from commons_pkg.commons import fields
 from redis_pkg.redis_library import add_data_to_stream, get_data, set_data
 
+# TODO: add a request-body validation check and also add a send alert functionality if the updated asteroid info
+# TODO: surpasses the allowed limit
+
 
 def update_asteroid_info(obj_asteroid_proc, data):
     """
