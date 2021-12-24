@@ -14,6 +14,9 @@ def delete_asteroid_info(obj_asteroid_proc, data):
             'status': 'success',
             'response_code': 200
         }
+        obj_asteroid_proc.logger.log(
+            level='INFO', message=f'Asteroid deleted successfully: {ret_data}', req_id=req_id
+        )
     else:
         ret_data = {
             'error': 'Error message described below',
@@ -21,6 +24,9 @@ def delete_asteroid_info(obj_asteroid_proc, data):
             'response_code': 404,
             'status': 'failed'
         }
+        obj_asteroid_proc.logger.log(
+            level='ERROR', message=f'Asteroid deletion failed: {ret_data}', req_id=req_id
+        )
     add_data_to_stream(
         rconn=obj_asteroid_proc.rconn, stream=data['response_stream_name'], data={req_id: json.dumps(ret_data)}
     )

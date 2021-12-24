@@ -15,7 +15,7 @@ Alert Data=
 """
 
 
-def send_alert(asteroid_alert):
+def send_alert(asteroid_alert, logger, req_id):
     copied = asteroid_alert.copy()
     try:
         context = ssl.create_default_context()
@@ -29,7 +29,13 @@ def send_alert(asteroid_alert):
             copied.pop('request_id', None)
             msg = f'{message}{json.dumps(copied)}'
             server.sendmail(sender_email, receiver_email, msg)
+            logger.log(
+                level='INFO', message=f'Asteroid Alert sent to {receiver_email} with message: {msg}', req_id=req_id
+            )
     except Exception as ex:
         print('Notification Alert Error: ', ex)
+        logger.log(
+            level='ERROR', message=f'Could not send asteroid alert due to exceptiono: {ex}', req_id=req_id
+        )
     finally:
         server.quit()

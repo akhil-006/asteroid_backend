@@ -1,13 +1,16 @@
 from asteroidprocessor_pkg.asteroidprocessor import AsteroidProcessor
 from redis_pkg.conn_handlers import connect
+from logger_pkg.logger import Logger
 
 # creating some global variables for easy implementation. Of course this won't be the way for production code.
 stream_name = 'asteroids_stream'
+service = 'asteroidprocessor'
 
 
 def main():
     rconn = connect()
-    obj_proc = AsteroidProcessor(rconn=rconn, streamname=stream_name)
+    objlog = Logger(rconn=rconn, service_name=service)
+    obj_proc = AsteroidProcessor(rconn=rconn, streamname=stream_name, logger=objlog, service_name=service)
 
     while True:
         try:
