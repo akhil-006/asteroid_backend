@@ -8,7 +8,7 @@ smtp_server = "smtp.gmail.com"
 sender_email = "adevelopment705@gmail.com"
 receiver_email = "adevelopment705@gmail.com"
 # password = input("Type your password and press enter:")
-password = 'demodevelopment'
+password = ''
 message = """\
 Subject: ASTEROID ALERT
 Alert Data=
