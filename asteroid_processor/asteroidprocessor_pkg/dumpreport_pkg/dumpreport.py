@@ -14,4 +14,4 @@ def extract_data_dump_to(file, objproc, data):
             row.pop('request_id', None)
             row.pop('method', None)
             writer.writerow(row)
-        objproc.logger.log(level='INFO', message=f'Asteroid info dumped successfully', req_id=None)
+        objproc.logger.log(level='INFO', message=f'Asteroid info dumped successfully', req_id=None, type='dump')

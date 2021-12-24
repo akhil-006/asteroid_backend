@@ -30,12 +30,14 @@ def send_alert(asteroid_alert, logger, req_id):
             msg = f'{message}{json.dumps(copied)}'
             server.sendmail(sender_email, receiver_email, msg)
             logger.log(
-                level='INFO', message=f'Asteroid Alert sent to {receiver_email} with message: {msg}', req_id=req_id
+                level='INFO', message=f'Asteroid Alert sent to {receiver_email} with message: {msg}', req_id=req_id,
+                type='alert'
             )
     except Exception as ex:
         print('Notification Alert Error: ', ex)
         logger.log(
-            level='ERROR', message=f'Could not send asteroid alert due to exceptiono: {ex}', req_id=req_id
+            level='ERROR', message=f'Could not send asteroid alert due to exception: {ex}', req_id=req_id,
+            type='alert'
         )
     # finally:
     #     server.quit()

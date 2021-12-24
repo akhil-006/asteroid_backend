@@ -31,7 +31,7 @@ def create_asteroid(obj_asteroid_proc, data):
             obj_asteroid_proc.instance_counter += 1
             set_data(obj_asteroid_proc.rconn, obj_asteroid_proc.instance_counter, req_id)
             obj_asteroid_proc.logger.log(
-                level='INFO', message=f'Asteroid created successfully with: {ret_data}', req_id=req_id
+                level='INFO', message=f'Asteroid created successfully with: {ret_data}', req_id=req_id, type='response'
             )
         else:
             ret_data = {
@@ -41,7 +41,7 @@ def create_asteroid(obj_asteroid_proc, data):
                 'status': 'failed'
             }
             obj_asteroid_proc.logger.log(
-                level='ERROR', message=f'Asteroid creation failed due to: {ret_data}', req_id=req_id
+                level='ERROR', message=f'Asteroid creation failed due to: {ret_data}', req_id=req_id, type='response'
             )
     except Exception as ex:
         ret_data = {
@@ -51,7 +51,7 @@ def create_asteroid(obj_asteroid_proc, data):
             'status': 'failed'
         }
         obj_asteroid_proc.logger.log(
-            level='CRITICAL', message=f'Asteroid creation failed due to: {ret_data}', req_id=req_id
+            level='CRITICAL', message=f'Asteroid creation failed due to: {ret_data}', req_id=req_id, type='response'
         )
     add_data_to_stream(
         rconn=obj_asteroid_proc.rconn, stream=data['response_stream_name'], data={req_id: json.dumps(ret_data)}

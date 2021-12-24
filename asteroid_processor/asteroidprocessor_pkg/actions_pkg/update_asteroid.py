@@ -6,6 +6,9 @@ from redis_pkg.redis_library import add_data_to_stream, get_data, set_data
 def update_asteroid_info(obj_asteroid_proc, data):
     # logic for delete asteroid
     req_id = data['asteroid_id']
+    obj_asteroid_proc.logger.log(
+        level='INFO', message=f'Received data in {update_asteroid_info.__name__}: {data}', req_id=req_id
+    )
     asteroid_info = get_data(obj_asteroid_proc.rconn, req_id)
     ret_data = json.loads(asteroid_info) if asteroid_info else None
     if ret_data:
@@ -22,7 +25,7 @@ def update_asteroid_info(obj_asteroid_proc, data):
             'response_code': 200
         }
         obj_asteroid_proc.logger.log(
-            level='INFO', message=f'Asteroid info updated successfully: {ret_data}', req_id=req_id
+            level='INFO', message=f'Asteroid info updated successfully: {ret_data}', req_id=req_id, type='response'
         )
     else:
         ret_data = {
@@ -32,7 +35,7 @@ def update_asteroid_info(obj_asteroid_proc, data):
             'status': 'failed'
         }
         obj_asteroid_proc.logger.log(
-            level='ERROR', message=f'Update Asteroid failed due to: {ret_data}', req_id=req_id
+            level='ERROR', message=f'Update Asteroid failed due to: {ret_data}', req_id=req_id, type='response'
         )
 
     add_data_to_stream(
