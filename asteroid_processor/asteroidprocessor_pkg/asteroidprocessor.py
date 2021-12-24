@@ -16,7 +16,7 @@ class AsteroidProcessor:
         self._block_for_ms = 2000
         self._reportfile_name = 'asteroidsdetails.csv'
         self._instance_counter = 0
-        self._generate_report_after_counter_value = 2
+        self._generate_report_after_counter_value = 21
         self._report_counter = 2
         self._start = 1
         self._logger = logger

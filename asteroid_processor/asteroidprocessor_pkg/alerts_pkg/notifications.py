@@ -37,5 +37,5 @@ def send_alert(asteroid_alert, logger, req_id):
         logger.log(
             level='ERROR', message=f'Could not send asteroid alert due to exceptiono: {ex}', req_id=req_id
         )
-    finally:
-        server.quit()
+    # finally:
+    #     server.quit()
