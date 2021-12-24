@@ -17,14 +17,19 @@ Alert Data=
 
 def send_alert(asteroid_alert):
     copied = asteroid_alert.copy()
-    context = ssl.create_default_context()
-    with smtplib.SMTP(smtp_server, port) as server:
-        server.ehlo()  # Can be omitted
-        server.starttls(context=context)
-        server.ehlo()  # Can be omitted
-        server.login(sender_email, password)
-        copied.pop('method', None)
-        copied.pop('response_stream_name', None)
-        copied.pop('request_id', None)
-        msg = f'{message}{json.dumps(copied)}'
-        server.sendmail(sender_email, receiver_email, msg)
+    try:
+        context = ssl.create_default_context()
+        with smtplib.SMTP(smtp_server, port) as server:
+            server.ehlo()  # Can be omitted
+            server.starttls(context=context)
+            server.ehlo()  # Can be omitted
+            server.login(sender_email, password)
+            copied.pop('method', None)
+            copied.pop('response_stream_name', None)
+            copied.pop('request_id', None)
+            msg = f'{message}{json.dumps(copied)}'
+            server.sendmail(sender_email, receiver_email, msg)
+    except Exception as ex:
+        print('Notification Alert Error: ', ex)
+    finally:
+        server.quit()
