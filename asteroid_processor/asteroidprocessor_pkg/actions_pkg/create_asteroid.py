@@ -5,6 +5,10 @@ from commons_pkg.commons import check_alert_params, validate_data
 
 
 def create_asteroid(obj_asteroid_proc, data):
+    """
+    Validates the `data`, creates the asteroid and sends alert if info received over-shooted `alert_params`. Returns the
+    response back to the calling service.
+    """
     # print(type(data), data)
     req_id = data.get('request_id')
     obj_asteroid_proc.logger.log(

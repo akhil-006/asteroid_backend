@@ -4,6 +4,9 @@ from redis_pkg.redis_library import add_data_to_stream, get_data, set_data
 
 
 def update_asteroid_info(obj_asteroid_proc, data):
+    """
+    Updates a particular asteroid info with the (given)asteroid id
+    """
     # logic for delete asteroid
     req_id = data['asteroid_id']
     obj_asteroid_proc.logger.log(

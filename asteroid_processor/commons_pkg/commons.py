@@ -17,17 +17,24 @@ alert_params = {
             'sizeMeters': 100,
             'probabilityOfCollisionWithEarth': 0.7
         },
+        # add any other dictionary of alert parameters(just like above)
     ]
 }
 
 
 def getuniqueid():
+    """
+    Generates the unique id which is associated to a particular request and is also associated to a Asteroid(asteroid ID)
+    """
     min = 000000000000000000000000
     max = 999999999999999999999999
     return str(random.randrange(start=min, stop=max))
 
 
 def extract(data):
+    """
+    Extracts the incoming `data` from the front-end service
+    """
     actual_data_dict = dict()
     i = 1
     for detail_list in data:
@@ -43,6 +50,9 @@ def extract(data):
 
 
 def check_alert_params(asteroid_info):
+    """
+    Checks the `asteroid_info` against the specified(/prescribed) `alert_params`.
+    """
     everyasteroid_with = alert_params.get('everyAsteroidWith')
     alert_bruce_willis = False
     for key in alert_params.keys():
@@ -65,6 +75,10 @@ def check_alert_params(asteroid_info):
 
 
 def validate_data(info):
+    """
+    Validates the `info` i.e. checks whether the json-fields(supplied in the request body) are valid or not. If not
+    valid, then notifies the caller(user) about anomalies.
+    """
     keys = list(info.keys())
     del keys[keys.index('request_id')]
     del keys[keys.index('response_stream_name')]

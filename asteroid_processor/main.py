@@ -8,6 +8,9 @@ service = 'asteroidprocessor'
 
 
 def main():
+    """
+    Service Initiation and object instantiation takes place at this point.
+    """
     rconn = connect()
     objlog = Logger(rconn=rconn, service_name=service)
     obj_proc = AsteroidProcessor(rconn=rconn, streamname=stream_name, logger=objlog, service_name=service)

@@ -16,6 +16,10 @@ Alert Data=
 
 
 def send_alert(asteroid_alert, logger, req_id):
+    """
+    Sends the alert/notification to the `receiver_email` when a particular asteroid over-shoots the prescribed limit of
+    asteroid parameters.
+    """
     copied = asteroid_alert.copy()
     try:
         context = ssl.create_default_context()

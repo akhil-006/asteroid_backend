@@ -3,6 +3,9 @@ from redis_pkg.redis_library import add_data_to_stream, delete_data
 
 
 def delete_asteroid_info(obj_asteroid_proc, data):
+    """
+    Deletes a particular asteroid info with the (given)asteroid id
+    """
     # print('data: ', data)
     req_id = data['asteroid_id']
     deleted = delete_data(obj_asteroid_proc.rconn, req_id)

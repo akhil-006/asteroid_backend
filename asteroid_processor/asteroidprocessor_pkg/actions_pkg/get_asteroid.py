@@ -3,6 +3,9 @@ from redis_pkg.redis_library import add_data_to_stream, get_data
 
 
 def get_asteroid_info(obj_asteroid_proc, data):
+    """
+    Retrieves a particular asteroid info with the (given)asteroid id
+    """
     # print('data: ', data)
     req_id = data['asteroid_id']
     obj_asteroid_proc.logger.log(
