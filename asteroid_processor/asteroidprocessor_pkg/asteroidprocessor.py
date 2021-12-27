@@ -5,6 +5,7 @@ from asteroidprocessor_pkg.actions_pkg.update_asteroid import update_asteroid_in
 from asteroidprocessor_pkg.actions_pkg.delete_asteroid import delete_asteroid_info
 from asteroidprocessor_pkg.dumpreport_pkg.dumpreport import extract_data_dump_to
 from commons_pkg.commons import extract
+from asteroidprocessor_pkg.servicehealth_pkg.service_health import get_service_health
 from redis_pkg.redis_library import read_data_from_stream, get_data
 
 
@@ -18,7 +19,8 @@ class AsteroidProcessor:
         self._strm_name = streamname
         self._count = 10
         self._block_for_ms = 2000
-        self._reportfile_name = 'asteroidsdetails.csv'
+        self._reportfile_name = 'asteroidsdetails'
+        self._reportfile_extension = 'csv'
         self._instance_counter = 0
         self._generate_report_after_counter_value = 21
         self._report_counter = 2
@@ -26,10 +28,11 @@ class AsteroidProcessor:
         self._logger = logger
         self._service_name = service_name
         self._actions = {
-            'post': create_asteroid,
-            'get': get_asteroid_info,
-            'put': update_asteroid_info,
-            'delete': delete_asteroid_info
+            'create_asteroid': create_asteroid,
+            'fetch_asteroid': get_asteroid_info,
+            'update_asteroid': update_asteroid_info,
+            'delete_asteroid': delete_asteroid_info,
+            'fetch_service_health': get_service_health
         }
 
     @property
@@ -88,6 +91,13 @@ class AsteroidProcessor:
         """
         return self._logger
 
+    @property
+    def reportfile_extension(self):
+        """
+        Get the report(dumping) file extension(type)
+        """
+        return self._reportfile_extension
+
     def read_data_from_stream(self):
         """
         Reads the messages from the service's stream and handles it for further processing. Calls the appropriate
@@ -117,7 +127,7 @@ class AsteroidProcessor:
                 data.append(get_data(self._rconn, i).decode())
 
             if data:
-                filename = f'{self.reportfile_name}_{int(time.time())}'
+                filename = f'{self.reportfile_name}_{int(time.time())}.{self._reportfile_extension}'
                 self._logger.log(level='INFO', message=f'BEGIN:: Dumping data to {filename} ::BEGIN', req_id=None)
                 extract_data_dump_to(filename, self, data)
                 self._instance_counter = self._generate_report_after_counter_value
