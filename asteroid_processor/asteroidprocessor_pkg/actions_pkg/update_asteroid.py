@@ -1,5 +1,5 @@
 import json
-from commons_pkg.commons import fields, validate_update_data, check_alert_params
+from commons_pkg.commons import fields, validate_data, check_alert_params
 from redis_pkg.redis_library import add_data_to_stream, get_data, set_data
 from asteroidprocessor_pkg.alerts_pkg.notifications import send_alert
 
@@ -19,7 +19,7 @@ def update_asteroid_info(obj_asteroid_proc, data):
     asteroid_info = get_data(obj_asteroid_proc.rconn, req_id)
     ret_data = json.loads(asteroid_info) if asteroid_info else None
     if ret_data:
-        err = validate_update_data(data)
+        err = validate_data(data)
         if not err:
             if check_alert_params(data):
                 send_alert(data, obj_asteroid_proc.logger, req_id)
