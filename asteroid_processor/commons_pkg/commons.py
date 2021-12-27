@@ -8,6 +8,7 @@ fields = [
     'timeOfObservation', 'name',
 ]
 
+message = f'Valid Fields are {fields}'
 
 alert_params = {
     'sizeMeters': 1000,
@@ -84,6 +85,28 @@ def validate_data(info):
     del keys[keys.index('response_stream_name')]
     del keys[keys.index('method')]
     if keys != fields:
+        global message
         unknown_fields = [field for field in keys if field not in fields]
-        return f'Valid Fields are {fields}. Unknown fields supplied: {unknown_fields}'
+        msg = message + f'. Unknown fields are: {unknown_fields}'
+        return msg
     return str()
+
+
+def validate_update_data(info):
+    """
+    Validates the `info` i.e. checks whether the json-fields(supplied in the UPDATE-Asteroid-request-body) are valid
+    or not. If not valid, then notifies the caller(user) about anomalies.
+    """
+    ret = str()
+    keys = list(info.keys())
+    del keys[keys.index('request_id')]
+    del keys[keys.index('response_stream_name')]
+    del keys[keys.index('method')]
+    del keys[keys.index('asteroid_id')]
+    for key in keys:
+        if key not in fields:
+            global message
+            unknown_fields = [field for field in keys if field not in fields]
+            ret = message + f'. Unknown fields are: {unknown_fields}'
+            break
+    return ret
